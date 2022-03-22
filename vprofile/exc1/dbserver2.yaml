@@ -1,0 +1,53 @@
+---
+
+- name: setup db-server
+  hosts: dbservers
+  become: yes
+
+  # vars:
+  #   dbuser: "admin"
+  #   db_passwd: "1234"
+  #   db_name: "accounts"
+ 
+  
+  tasks:
+
+    - debug:
+        msg: "database change to {{db_name}} "
+
+    - debug:
+        msg: "user name changed to {{dbuser}} "
+    - name: install MySQL
+      yum :
+        name: mariadb-server
+        state: present
+
+    - name: install PY-MySQL
+      yum :
+        name: MySQL-python
+        state: present
+
+    - name: Start service MARIA-DB, if not running
+      service:
+        name: mariadb
+        state: started
+        
+
+    - name: Create a new database with name 'accounts'
+      mysql_db:
+        name: "{{db_name}}"
+        state: present
+
+    - name: Add user "admin" to database
+      mysql_user:
+        name: "{{dbuser}}"
+        password: "{{db_passwd}}"
+        priv: '*.*:ALL'
+        state: present
+
+
+    - name: reload service mariadb, in all cases
+      systemd:
+        name: mariadb
+        state: restarted
+

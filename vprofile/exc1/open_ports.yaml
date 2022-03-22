@@ -1,0 +1,25 @@
+---
+- name: setup webserver
+  hosts: webservers
+  become: yes
+  tasks:
+        
+
+   - iptables:
+       chain: INPUT
+       protocol: tcp
+       destination_port: 80
+       ctstate: NEW
+       syn: match
+       jump: ACCEPT
+       comment: Accept new http connections    
+
+   - iptables:
+       chain: INPUT
+       protocol: tcp
+       destination_port: 443
+       ctstate: NEW
+       syn: match
+       jump: ACCEPT
+       comment: Accept new https connections
+

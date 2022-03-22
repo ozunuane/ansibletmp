@@ -1,0 +1,14 @@
+- name: get ansible facts
+  hosts: all
+
+  tasks:
+    - name: print ansible OS
+      debug: 
+        var: ansible_distribution
+
+    - name: print processor information
+      debug:
+        var: ansible_system_capabilities [5]
+
+
+

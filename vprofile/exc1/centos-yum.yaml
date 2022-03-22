@@ -1,0 +1,11 @@
+---
+- name: setup yum
+  hosts: webservers
+  tasks: 
+     - name: run yum update
+          yum :      
+            - name: yum update
+              become: true
+              state: latest
+
+

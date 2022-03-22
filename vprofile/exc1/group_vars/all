@@ -1,0 +1,4 @@
+#variables for hosts in inventory servers
+dbuser: admin
+db_name: accounts
+db_passwd: 1234
