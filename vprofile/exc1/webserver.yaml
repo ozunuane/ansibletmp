@@ -9,13 +9,13 @@
       apt:
         name: python-apt
         state: present  
-      when: ansible_os_family == "Ubuntu"
+      when: ansible_distribution == "Ubuntu"
 
 
     - name: Run the equivalent of "apt-get update" as a separate step
       apt:
          update_cache: yes
-      when: ansible_os_family == "Ubuntu"
+      when: ansible_distribution == "Ubuntu"
  
    
 
@@ -24,31 +24,26 @@
         name: httpd
         state: latest
         update_cache: yes
-      when: ansible_os_family == "CentOS"
+      when: ansible_distribution  == "CentOS"
      
     - name: Install apache service on Ubuntu avoid starting it immediately
-      apt:
-        name: Apache 
-        state: latest
+      apt: name=apache2 state=present
       environment:
         RUNLEVLEL: 1  
-
-      when: ansible_os_family == "Ubuntu"
-    
+      when: ansible_distribution == "Ubuntu"
  
 
     - name: Start service httpd, if not running 
       service:
         name: httpd
         state: started
-        enable: yes
-      when: ansible_os_family == "CentOS"
+      when: ansible_distribution == "CentOS"
         
      
 
     - name: example copying file with owner and permissions
       copy:
-        src: /home/ubuntu/vprofile/exc1/website/webpage/
+        src: /home/ubuntu/ansibletmp/vprofile/exc1/website/webpage/
         dest: /var/www/html/
         owner: root
         group: root
@@ -59,7 +54,7 @@
       service:
         name: httpd
         state: restarted
-      when: ansible_os_family == "CentOS"
+      when: ansible_distribution == "CentOS"
 
 
 
